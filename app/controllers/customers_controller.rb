@@ -1,5 +1,5 @@
 class CustomersController < ApplicationController
-  before_action :set_customer, only: %i[show destroy add_subscription]
+  before_action :set_customer, only: %i[show cancel_subscription add_subscription]
 
   # GET /customers
   def index
@@ -38,9 +38,11 @@ class CustomersController < ApplicationController
     render json: @customer
   end
 
-  # DELETE /customers/1
-  def destroy
-    @customer.destroy!
+  # PATCH /customers/1
+  def cancel_subscription
+    @customer.cancel_subscription(params[:subscription_id])
+
+    render json: @customer
   end
 
   private
@@ -57,6 +59,8 @@ class CustomersController < ApplicationController
 
   def subscription_params
     # require 'pry'; binding.pry
-    params.require(:subscription).permit(:title, :price, :frequency, :status)
+    # permitting parameters for an array in a controller, you need to explicitly inform
+    # Rails that you expect an array for that parameter
+    params.require(:subscription).permit(:title, :price, :frequency, :status, tea_ids: [])
   end
 end

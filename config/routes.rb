@@ -10,7 +10,8 @@ Rails.application.routes.draw do
   resources :customers, only: [:create, :index, :show] do
     member do
       patch "add_subscription", to: "customers#add_subscription"
-      delete "remove_subscription/:subscription_id", to: "customers#remove_subscription"
+      patch "cancel_subscription/:subscription_id", to: "customers#cancel_subscription",
+        as: "cancel_subscription"
     end
   end
 end

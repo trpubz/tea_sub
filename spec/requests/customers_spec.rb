@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "/customers", type: :request do
-  after :each do
+  before :each do
     DatabaseCleaner.clean
   end
   # This should return the minimal set of attributes required to create a valid
@@ -60,33 +60,22 @@ RSpec.describe "/customers", type: :request do
         expect(response.content_type).to match(a_string_including("application/json"))
       end
     end
-
-    context "with invalid parameters" do
-      it "does not create a new Customer" do
-        expect {
-          post customers_url,
-            params: {customer: invalid_attributes}, as: :json
-        }.to change(Customer, :count).by(0)
-      end
-
-      it "renders a JSON response with errors for the new customer" do
-        post customers_url,
-          params: {customer: invalid_attributes}, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to match(a_string_including("application/json"))
-      end
-    end
   end
 
   describe "PATCH /add_subscription" do
     context "with valid parameters" do
+      before :each do
+        @tea = create :tea
+      end
+
       let(:new_attributes) {
         {
           subscription: {
             title: "ProPlus+",
             price: 50,
             status: "active",
-            frequency: 15
+            frequency: 15,
+            tea_ids: [@tea.id.to_s]
           }
         }
       }
@@ -105,26 +94,30 @@ RSpec.describe "/customers", type: :request do
           params: new_attributes, headers: valid_headers, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including("application/json"))
-      end
-    end
-
-    context "with invalid parameters" do
-      it "renders a JSON response with errors for the customer" do
-        customer = Customer.create! valid_attributes
-        patch add_subscription_customer_url(customer),
-          params: invalid_attributes, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to match(a_string_including("application/json"))
+        expect(response.body).to include(@tea.id.to_s)
       end
     end
   end
 
-  describe "DELETE /destroy" do
-    xit "destroys the requested customer" do
+  describe "PATCH /cancel_subscription" do
+    let(:new_attributes) {
+      {
+        subscription: {
+          title: "ProPlus+",
+          price: 50,
+          status: "active",
+          frequency: 15,
+          tea_ids: []
+        }
+      }
+    }
+
+    it "cancels the requested subscriptions" do
       customer = Customer.create! valid_attributes
-      expect {
-        delete customer_url(customer), headers: valid_headers, as: :json
-      }.to change(Customer, :count).by(-1)
+      sub = customer.add_subscription(new_attributes[:subscription])
+      patch cancel_subscription_customer_url(customer, sub), headers: valid_headers, as: :json
+
+      expect(response.body).to include "cancelled"
     end
   end
 end

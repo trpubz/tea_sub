@@ -12,6 +12,10 @@ class Customer
 
   def add_subscription(subscription)
     # require 'pry'; binding.pry
-    self.subscriptions.create(subscription)
+    self.subscriptions.create!(subscription)
+  end
+  
+  def cancel_subscription(subscription)
+    subscriptions.find(subscription).status = "cancelled"
   end
 end

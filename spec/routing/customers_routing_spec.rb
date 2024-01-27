@@ -24,9 +24,5 @@ RSpec.describe CustomersController, type: :routing do
       expect(patch: "/customers/#{@customer.id}/add_subscription")
         .to route_to("customers#add_subscription", id: @customer.id.to_s)
     end
-
-    xit "routes to #destroy" do
-      expect(delete: "/customers/1").to route_to("customers#destroy", id: "1")
-    end
   end
 end
