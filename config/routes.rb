@@ -7,8 +7,10 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-  resources :customers do
-    post "add_subscription", on: :member
-    delete "remove_subscription/:subscription_id", on: :member, as: :remove_subscription
+  resources :customers, only: [:create, :index, :show] do
+    member do
+      patch "add_subscription", to: "customers#add_subscription"
+      delete "remove_subscription/:subscription_id", to: "customers#remove_subscription"
+    end
   end
 end

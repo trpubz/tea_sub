@@ -1,5 +1,5 @@
 class CustomersController < ApplicationController
-  before_action :set_customer, only: %i[show update destroy]
+  before_action :set_customer, only: %i[show destroy add_subscription]
 
   # GET /customers
   def index
@@ -33,7 +33,8 @@ class CustomersController < ApplicationController
   #   end
   # end
   def add_subscription
-    @customer.add_subscription(params[:subscription])
+    @customer.add_subscription(subscription_params)
+
     render json: @customer
   end
 
@@ -52,5 +53,10 @@ class CustomersController < ApplicationController
   # Only allow a list of trusted parameters through.
   def customer_params
     params.require(:customer).permit(:first_name, :last_name, :email, :address)
+  end
+
+  def subscription_params
+    # require 'pry'; binding.pry
+    params.require(:subscription).permit(:title, :price, :frequency, :status)
   end
 end

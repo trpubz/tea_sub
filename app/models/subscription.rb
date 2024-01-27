@@ -6,5 +6,5 @@ class Subscription
   field :status, type: String  # active, inactive, expired, canceled
   field :frequency, type: Integer  # 15, 30, 60, 90
 
-  belongs_to :customer
+  validates_presence_of :title, :price, :status, :frequency
 end
