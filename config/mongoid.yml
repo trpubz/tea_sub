@@ -4,7 +4,7 @@ development:
     # Defines the default client. (required)
     default:
       # Mongoid can connect to a URI accepted by the driver:
-      uri: mongodb+srv://cluster0.ajkdcgr.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority
+      uri: mongodb+srv://cluster0.ajkdcgr.mongodb.net/tea_sub_development?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority
 
       # Otherwise define the parameters separately.
       # This defines the name of the default database that Mongoid can connect to.
@@ -94,15 +94,15 @@ development:
         # replica_set: name
 
         # Whether to connect to the servers via ssl. (default: false)
-        # ssl: true
+        ssl: true
 
         # The certificate file used to identify the connection against MongoDB.
-        # ssl_cert: /path/to/my.cert
+        ssl_cert: /Users/trpubz/turing2308/4mod/projects/int/X509 Certificate.pem
 
         # The private keyfile used to identify the connection against MongoDB.
         # Note that even if the key is stored in the same file as the certificate,
         # both need to be explicitly specified.
-        # ssl_key: /path/to/my.key
+        ssl_key: /Users/trpubz/turing2308/4mod/projects/int/X509 Certificate.pem
 
         # A passphrase for the private key.
         # ssl_key_pass_phrase: password

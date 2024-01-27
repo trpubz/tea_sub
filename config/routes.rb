@@ -1,7 +1,4 @@
 Rails.application.routes.draw do
-  resources :teas
-  resources :subscriptions
-  resources :customers
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -10,4 +7,8 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  resources :customers do
+    post "add_subscription", on: :member
+    delete "remove_subscription/:subscription_id", on: :member, as: :remove_subscription
+  end
 end

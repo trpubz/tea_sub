@@ -25,12 +25,16 @@ class CustomersController < ApplicationController
   end
 
   # PATCH/PUT /customers/1
-  def update
-    if @customer.update(customer_params)
-      render json: @customer
-    else
-      render json: @customer.errors, status: :unprocessable_entity
-    end
+  # def update
+  #   if @customer.update(customer_params)
+  #     render json: @customer
+  #   else
+  #     render json: @customer.errors, status: :unprocessable_entity
+  #   end
+  # end
+  def add_subscription
+    @customer.add_subscription(params[:subscription])
+    render json: @customer
   end
 
   # DELETE /customers/1
