@@ -9,9 +9,4 @@ RSpec.describe Subscription, type: :model do
   it { should validate_presence_of :price }
   it { should validate_presence_of :status }
   it { should validate_presence_of :frequency }
-
-  it "should exist without a customer" do
-    sub = create :subscription
-    expect(sub).to_not respond_to :customer
-  end
 end

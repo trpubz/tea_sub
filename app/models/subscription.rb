@@ -7,4 +7,6 @@ class Subscription
   field :frequency, type: Integer  # 15, 30, 60, 90
 
   validates_presence_of :title, :price, :status, :frequency
+
+  embedded_in :customer
 end
